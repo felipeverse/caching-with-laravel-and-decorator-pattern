@@ -9,4 +9,4 @@ Redis é uma estrutura de armazenamento de dados em memória. Pode ser utilizado
 
 Docker é a salvação dos aflitos. Se você já chorou nas configurações dos seus ambientes de desenvolvimento e até produção, sabe que o Docker impediu a queda de muitos fios de cabelo. De forma bem simplificada, essa ferramenta facilita o gerenciamento da infraestrutura das aplicações, impactando positivamente no processo de criação, manutenção e escala dos serviços.
 
-[https://tiagosabadini.medium.com/configurando-laravel-com-redis-em-um-container-docker-em-5-passos-57ebed23d0fa](Acesse o tutorial completo neste link)
+[Acesse o tutorial completo neste link](https://tiagosabadini.medium.com/configurando-laravel-com-redis-em-um-container-docker-em-5-passos-57ebed23d0fa)
