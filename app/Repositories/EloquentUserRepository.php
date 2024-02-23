@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cache;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class EloquentUserRepository implements UserRepositoryInterface {
@@ -13,11 +12,6 @@ class EloquentUserRepository implements UserRepositoryInterface {
      * @var User
      */
     private $model;
-
-    /**
-     * Tempo padrão de expiração do cache em segundos.
-     */
-    private const DEFAULT_CACHE_TTL = 30;
 
     /**
      * @param User $model
@@ -34,9 +28,7 @@ class EloquentUserRepository implements UserRepositoryInterface {
      */
     public function all()
     {
-        return Cache::tags('users')->remember('all', self::DEFAULT_CACHE_TTL, function () {
-            return $this->model->all();
-        });
+        return $this->model->all();
     }
 
     /**
@@ -46,9 +38,7 @@ class EloquentUserRepository implements UserRepositoryInterface {
      */
     public function allWithPostCount()
     {
-        return Cache::tags('users')->remember('allWithPostCount', self::DEFAULT_CACHE_TTL, function () {
-            return $this->model->withCount('posts')->get();
-        });
+        return $this->model->withCount('posts')->get();
     }
 
     /**
@@ -59,9 +49,7 @@ class EloquentUserRepository implements UserRepositoryInterface {
      */
     public function findOrFail($id)
     {
-        return Cache::tags('users')->remember($id, self::DEFAULT_CACHE_TTL, function () use ($id) {
-            return $this->model->findOrFail($id);
-        });
+        return $this->model->findOrFail($id);
     }
 
     /**
@@ -80,7 +68,6 @@ class EloquentUserRepository implements UserRepositoryInterface {
         $user->password = Hash::make('password');
         $user->save();
 
-        Cache::tags('users')->flush();
         return $user;
     }
 
@@ -94,6 +81,6 @@ class EloquentUserRepository implements UserRepositoryInterface {
     {
         $user = $this->model->findOrFail($id);
         $user->delete();
-        Cache::tags('users')->flush();
+        return null;
     }
 }

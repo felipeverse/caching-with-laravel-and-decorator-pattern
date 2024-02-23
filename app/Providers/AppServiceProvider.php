@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\EloquentUserRepository;
+use App\Repositories\Decorators\CachingUserRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,18 +17,22 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         /**
-         * Registra a implementação do Repositório de Usuários.
+         * Registra a implementação do Repositório de Usuários com caching.
          *
          * Este trecho de código configura como a aplicação resolve a interface UserRepositoryInterface.
-         * A implementação EloquentUserRepository é registrada como a implementação para essa interface. Isso permite
-         * que possamos substituir facilmente a implementação do repositório sem afetar outros componentes.
+         * A implementação EloquentUserRepository é registrada como a implementação base para essa interface.
+         * Em seguida, criamos uma instância do CachingUserRepository, que serve como um decorador para o repositório base,
+         * adicionando caching às consultas de banco de dados.
          *
          * Importância:
          * Facilita a manutenção e a flexibilidade do código, seguindo o princípio de inversão de controle.
+         * Adiciona uma camada de caching ao repositório de usuários, melhorando o desempenho ao armazenar em cache
+         * os resultados das consultas frequentes.
          */
         $this->app->singleton('App\Repositories\Interfaces\UserRepositoryInterface', function () {
-            $baseRepopository = new EloquentUserRepository(new \App\Models\User());
-            return $baseRepopository;
+            $baseRepository = new EloquentUserRepository(new User);
+            $cachingRepository = new CachingUserRepository($baseRepository, $this->app['cache.store']);
+            return $cachingRepository;
         });
     }
 
