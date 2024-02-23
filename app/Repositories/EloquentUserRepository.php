@@ -81,5 +81,6 @@ class EloquentUserRepository implements UserRepositoryInterface {
     {
         $user = $this->model->findOrFail($id);
         $user->delete();
+        return null;
     }
 }
