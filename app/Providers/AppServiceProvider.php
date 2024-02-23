@@ -14,9 +14,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Registra a implementação EloquentUserRepository para a interface UserRepositoryInterface
         $this->app->singleton('App\Repositories\Interfaces\UserRepositoryInterface', function () {
-            $baseRepo = new EloquentUserRepository(new \App\Models\User());
-            return $baseRepo;
+            // Cria uma instância de EloquentUserRepository, passando uma instância de User como modelo e a retorna
+            $baseRepopository = new EloquentUserRepository(new \App\Models\User());
+            return $baseRepopository;
         });
     }
 

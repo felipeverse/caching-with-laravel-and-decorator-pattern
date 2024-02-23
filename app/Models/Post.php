@@ -22,6 +22,11 @@ class Post extends Authenticatable
         'user_id',
     ];
 
+    /**
+     * Relacionamento "belongsTo" com a model User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
