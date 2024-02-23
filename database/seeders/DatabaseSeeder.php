@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pessoa;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Pessoa::factory(500)->create();
+        User::factory(2500)->create()->each(function ($user) {
+            Post::factory(rand(50, 500))->create(['user_id' => $user->id]);
+        });
     }
 }
